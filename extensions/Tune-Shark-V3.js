@@ -1,3 +1,4 @@
+// AUTHOR: SharkPool
 // Name: Tune Shark V3
 // ID: SPtuneShark3
 // Description: Advanced Audio Engine, giving Complex Sound Control
