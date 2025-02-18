@@ -1,4 +1,4 @@
-// AUTHOR: SharkPool
+// AUTHOR: <a href="https://sharkpools-extensions.vercel.app">SharkPool</a>
 // Name: Tune Shark V3
 // ID: SPtuneShark3
 // Description: Advanced Audio Engine, giving Complex Sound Control
