@@ -1,3 +1,4 @@
+// AUTHOR: SharkPool
 // Name: Tune Shark (Legacy)
 // ID: SPtuneShark
 // Description: Advanced Sound Engine, inspired by LilyMakesThings
