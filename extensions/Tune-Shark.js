@@ -1,4 +1,4 @@
-// AUTHOR: SharkPool
+// AUTHOR: <a href="https://sharkpools-extensions.vercel.app">SharkPool</a>
 // Name: Tune Shark (Legacy)
 // ID: SPtuneShark
 // Description: Advanced Sound Engine, inspired by LilyMakesThings
