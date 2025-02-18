@@ -70,9 +70,36 @@ async function displayRepoContents(path = '') {
     fileTree.innerHTML = ''; // Clear previous content
 
     if (Array.isArray(data)) {
-        data.forEach(item => {
-            AddListItem(item, fileTree);
-        });
+        // Use a for...of loop so we can await inside the loop
+        for (const item of data) {
+            let author = 'unknown'; // default value
+
+            // If the item is a file and has a download URL, fetch its content.
+            if (item.type === 'file' && item.download_url) {
+                try {
+                    const response = await fetch(item.download_url);
+                    if (response.ok) {
+                        const text = await response.text();
+						let firstLine = text.split('\n')[0];
+						// Remove BOM and extra whitespace including any trailing \r
+						firstLine = firstLine.replace(/^\uFEFF/, '').trim();
+
+						const match = firstLine.match(/^\/\/\s*AUTHOR:\s*(.+)$/);
+						console.log(match);
+						if (match) {
+							author = match[1].trim();
+						}
+
+                    } else {
+                        console.error(`Failed to fetch file content from ${item.download_url}`);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching file content: ${error}`);
+                }
+            }
+            // Pass the author (extracted or default) into addListItem along with the item and fileTree.
+            AddListItem(item, fileTree, author);
+        }
     }
 
     if (path !== 'extensions') {
@@ -81,12 +108,13 @@ async function displayRepoContents(path = '') {
         listItem.classList.add('backbutton');
         listItem.textContent = "Back";
         listItem.addEventListener('click', () => displayRepoContents('extensions'));
-        document.getElementById('file-tree').appendChild(listItem);
+        fileTree.appendChild(listItem);
     }
 
     // Hide spinner after loading
     spinner.style.display = 'none';
 }
+
 
 // Toggle folder visibility
 function toggleFolder(folderElement, path) {
