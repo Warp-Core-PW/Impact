@@ -1,0 +1,27 @@
+[
+  {
+    "name": ".github%2Fworkflows%2Fdownload-translations.yml",
+    "type": "file",
+    "path": "extensions/NoCreatorAttached/TurboWarp/DeclinedPRS/PR_1844/.github%2Fworkflows%2Fdownload-translations.yml"
+  },
+  {
+    "name": ".github%2Fworkflows%2Fupload-translations.yml",
+    "type": "file",
+    "path": "extensions/NoCreatorAttached/TurboWarp/DeclinedPRS/PR_1844/.github%2Fworkflows%2Fupload-translations.yml"
+  },
+  {
+    "name": "development%2Fdownload-translations.js",
+    "type": "file",
+    "path": "extensions/NoCreatorAttached/TurboWarp/DeclinedPRS/PR_1844/development%2Fdownload-translations.js"
+  },
+  {
+    "name": "development%2Ftransifex-common.js",
+    "type": "file",
+    "path": "extensions/NoCreatorAttached/TurboWarp/DeclinedPRS/PR_1844/development%2Ftransifex-common.js"
+  },
+  {
+    "name": "development%2Fupload-translations.js",
+    "type": "file",
+    "path": "extensions/NoCreatorAttached/TurboWarp/DeclinedPRS/PR_1844/development%2Fupload-translations.js"
+  }
+]

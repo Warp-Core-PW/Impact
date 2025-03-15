@@ -1,10 +1,5 @@
 [
   {
-    "name": "NoCreatorAttached",
-    "type": "dir",
-    "path": "extensions/NoCreatorAttached"
-  },
-  {
     "name": "-SIPC-",
     "type": "dir",
     "path": "extensions/-SIPC-"
@@ -248,6 +243,11 @@
     "name": "Nights",
     "type": "dir",
     "path": "extensions/Nights"
+  },
+  {
+    "name": "NoCreatorAttached",
+    "type": "dir",
+    "path": "extensions/NoCreatorAttached"
   },
   {
     "name": "NOname-awa",
