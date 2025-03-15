@@ -207,12 +207,12 @@
   {
     "name": "Mio",
     "type": "dir",
-    "path": "extensions/Mio"
+    "path": "https://gallery.miyo.lol"
   },
   {
     "name": "Mistium",
     "type": "dir",
-    "path": "extensions/Mistium"
+    "path": "https://extensions.mistium.com"
   },
   {
     "name": "Monochromasity",
