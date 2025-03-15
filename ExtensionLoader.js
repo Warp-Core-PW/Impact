@@ -1,3 +1,4 @@
+
 const basePath = "extensions"; // Base path where extensions are stored
 
 const SearchField = document.querySelector(".SearchField");
@@ -27,7 +28,11 @@ async function fetchLocalContents(path) {
 function AddListItem(item, fileTree) {
   const listItem = document.createElement("li");
   listItem.classList.add(item.type);
-  listItem.classList.add(item.type === "dir" ? "folder" : "file");
+  listItem.classList.add({
+    "dir": "folder",
+    "file": "file",
+    "link": "folder",
+  }[item.type]);
   listItem.textContent = item.name;
   listItem.id = item.path;
 
@@ -36,6 +41,10 @@ function AddListItem(item, fileTree) {
     const subfolder = document.createElement("ul");
     subfolder.classList.add("subfolder");
     listItem.appendChild(subfolder);
+  } else if (item.type === "link") {
+    listItem.addEventListener("click", () => {
+      window.location.href = item.path;
+    });
   } else {
     listItem.addEventListener("click", () => Onclick(listItem.id));
 
