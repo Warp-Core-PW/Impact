@@ -206,12 +206,12 @@
   },
   {
     "name": "Mio",
-    "type": "dir",
+    "type": "link",
     "path": "https://gallery.miyo.lol"
   },
   {
     "name": "Mistium",
-    "type": "dir",
+    "type": "link",
     "path": "https://extensions.mistium.com"
   },
   {
