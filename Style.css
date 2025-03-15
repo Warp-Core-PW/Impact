@@ -13,7 +13,7 @@ body {
     --main-color: #e93a3a;
     --hover-scale: 1.005
 }
-Impact Header {
+h2.ImpactHeader {
     text-align: center;
 }
 h1 {
