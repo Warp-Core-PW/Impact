@@ -19,15 +19,9 @@ Discover the full collection at the **Impact Website**:
 
 ---
 
-## Plugin Categories  
+## Hosting Locally
 
-- **UI Enhancements**: Customize your TurboWarp experience.  
-- **Code Extensions**: Unlock new blocks and features for your projects.  
-- **Debugging Tools**: Tools to improve testing and optimization.  
-- **Game Development**: Plugins designed to simplify game mechanics.  
-- **Creative Effects**: Add stunning visuals and audio capabilities.  
-
----
+Host Impact Locally! Just run ` git clone https://github.com/Warp-Core-PW/Impact/ ` and run the server.bat file!
 
 ## Contributing  
 
