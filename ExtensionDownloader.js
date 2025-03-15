@@ -1,117 +1,98 @@
-const basePath = "extensions"; // Base path where extensions are stored
+const Button = document.querySelector(".ModeButton");
 
-const SearchField = document.querySelector(".SearchField");
+// Updated base URL to use GitHub Pages instead of raw GitHub content
+const linkbody = "https://impact.warpcore.live/";
 
-function ReportErrorOnPage() {
-  const ErrorMessage = document.createElement("h5");
-  ErrorMessage.style =
-    "color: #F54156; text-align: center; font-size: 30px; padding: 20px";
-  ErrorMessage.textContent = "Failed to fetch extensions :(";
-  document.body.insertBefore(ErrorMessage, document.querySelector(".Footer"));
+function downloadStringAsFile(content, fileName, contentType) {
+    const blob = new Blob([content], { type: contentType });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
 
-async function fetchLocalContents(path) {
-  try {
-    const response = await fetch(`${path}/index.json`); // Expecting an index.json listing directory contents
-    if (response.ok) {
-      return await response.json();
+async function CopyToClipboard(Data) {
+    await navigator.clipboard.writeText(Data);
+}
+
+function ToggleToString(Bool) {
+    return Bool === "true" ? "false" : "true";
+}
+
+function ToggleButton(ToggleValue, savePreference = false) {
+    if (savePreference) {
+        setCookie("PreferCopy", ToggleValue);
+    }
+    
+    if (ToggleValue === "true") {
+        Button.textContent = "Copy code";
+        Button.dataset.toggle = "true";
     } else {
-      ReportErrorOnPage();
+        Button.textContent = "Download";
+        Button.dataset.toggle = "false";
     }
-  } catch (error) {
-    ReportErrorOnPage();
-  }
 }
 
-// Helper to create and add a list item
-function AddListItem(item, fileTree) {
-  const listItem = document.createElement("li");
-  listItem.classList.add(item.type);
-  listItem.classList.add({
-    "dir": "folder",
-    "file": "file",
-    "link": "file",
-  }[item.type]);
-  listItem.textContent = item.name;
-  listItem.id = item.path;
+const getCookie = (name) => {
+    return document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(name + "="))
+        ?.split("=")[1];
+};
 
-  if (item.type === "dir") {
-    listItem.addEventListener("click", () => toggleFolder(listItem, listItem.id));
-    const subfolder = document.createElement("ul");
-    subfolder.classList.add("subfolder");
-    listItem.appendChild(subfolder);
-  } else if (item.type === "link") {
-    listItem.addEventListener("click", () => {
-      window.location.href = item.path;
-    });
-  } else {
-    listItem.addEventListener("click", () => Onclick(listItem.id));
-
-    // Create and append the copy link button
-    const copyButton = document.createElement("button");
-    copyButton.textContent = "Copy Link";
-    copyButton.style.marginLeft = "10px";
-    copyButton.addEventListener("click", (event) => {
-      event.stopPropagation(); // Prevent triggering file click
-      const fileUrl = `${window.location.origin}/${item.path}`; // Ensure correct local file URL
-      navigator.clipboard.writeText(fileUrl).then(() => {
-        alert("Link copied to clipboard");
-      });
-    });
-    listItem.appendChild(copyButton);
-  }
-
-  fileTree.appendChild(listItem);
+function setCookie(name, value) {
+    document.cookie = `${name}=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 }
 
-// Fetch and display the directory structure
-async function displayLocalContents(path = basePath) {
-  const data = await fetchLocalContents(path);
-  if (data === null) return;
+// Ensure a default setting for the "PreferCopy" cookie
+if (getCookie("PreferCopy") === undefined) {
+    setCookie("PreferCopy", "false");
+}
 
-  const fileTree = document.getElementById("file-tree");
-  const spinner = document.getElementById("spinner");
-  fileTree.innerHTML = "";
+// Encode filenames to handle spaces and special characters
+function encodeFileName(fileName) {
+    return encodeURIComponent(fileName);
+}
 
-  if (Array.isArray(data)) {
-    for (const item of data) {
-      if (item.type === "file" && item.name.endsWith(".author")) continue;
-      AddListItem(item, fileTree);
+async function fetchData(FileName) {
+    try {
+        const encodedFileName = encodeFileName(FileName);
+        const fileUrl = `${linkbody}${encodedFileName}`;
+        console.log("Fetching:", fileUrl);
+
+        const response = await fetch(fileUrl);
+        if (!response.ok) {
+            alert(`Failed to fetch extension code for: ${FileName}`);
+            return null;
+        }
+        return await response.text();
+    } catch (error) {
+        alert(`Failed to fetch extension code for: ${FileName}`);
+        return null;
     }
-  }
-
-  if (path !== basePath) {
-    const listItem = document.createElement("li");
-    listItem.classList.add("backbutton");
-    listItem.textContent = "Back";
-    listItem.addEventListener("click", () => displayLocalContents(basePath));
-    fileTree.appendChild(listItem);
-  }
-
-  spinner.style.display = "none";
 }
 
-// Toggle folder visibility
-function toggleFolder(folderElement, path) {
-  folderElement.classList.toggle("expanded");
-  const subfolder = folderElement.querySelector(".subfolder");
-  if (subfolder) {
-    displayLocalContents(path);
-  }
-}
+async function Onclick(ExtName) {
+    const ExtData = await fetchData(ExtName);
+    if (ExtData === null) {
+        return;
+    }
 
-function OnSearch() {
-  const SearchQuery = SearchField.value.toLowerCase();
-  const Items = document.getElementById("file-tree").children;
-  Array.from(Items).forEach(function (listItem) {
-    if (listItem.id.toLowerCase().includes(SearchQuery)) {
-      listItem.hidden = false;
+    if (getCookie("PreferCopy") === "true") {
+        await CopyToClipboard(ExtData);
+        alert("Copied to clipboard!");
     } else {
-      listItem.hidden = true;
+        downloadStringAsFile(ExtData, ExtName, "text/javascript");
     }
-  });
 }
 
-SearchField.addEventListener("input", OnSearch);
+// Toggle button functionality when clicked
+Button.addEventListener("click", () => {
+    let currentToggle = Button.dataset.toggle === "true" ? "false" : "true";
+    ToggleButton(currentToggle, true);
+});
 
-displayLocalContents(basePath);
+// Initialize button with saved preference
+ToggleButton(getCookie("PreferCopy"), false);
